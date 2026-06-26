@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Eye, EyeOff, Rocket } from "lucide-react";
 import { supabase } from "../utils/supabase";
-import { useAuth } from "../context/AuthContext";
 
 export default function LoginPage() {
-  const Navigate = useNavigate();
-  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -19,7 +16,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -32,7 +29,7 @@ export default function LoginPage() {
 
       // AuthContext will handle navigation based on user onboarding status and role
       setIsLoading(false);
-    } catch (err) {
+    } catch {
       setError("Invalid email or password. Please try again.");
     } finally {
       setIsLoading(false);
@@ -40,7 +37,7 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
     });
 
