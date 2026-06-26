@@ -107,6 +107,8 @@ def trending_niches():
                     "fetched_at": today
                 }).execute()
             result = supabase.table("trending_niches").select("*").eq("fetched_at", today).execute()
+        except HTTPException:
+            raise
         except Exception as e:
             print("Gemini fetch failed:", e)
             # fallback: serve most recent data
